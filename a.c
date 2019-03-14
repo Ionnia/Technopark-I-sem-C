@@ -10,18 +10,18 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-char* getString();
-char** getArrayOfStrings(uint32_t*);
-uint32_t myFunction(char**, uint32_t);
+char* get_string();
+char** get_array_of_strings(uint32_t* num_of_strings);
+uint32_t count_lines_with_equal_brackets(char** strings, const uint32_t num_of_strings);
 
 int main(void){
     uint32_t num_of_strings = 0;
-    char** strings = getArrayOfStrings(&num_of_strings);
+    char** strings = get_array_of_strings(&num_of_strings);
     if(strings == NULL){
         printf("error");
         return 0;
     }
-    myFunction(strings, num_of_strings-1);                  // Последняя строка пустая
+    count_lines_with_equal_brackets(strings, num_of_strings-1);                  // Последняя строка пустая
     for(uint32_t i = 0; i < num_of_strings; ++i){
         free(strings[i]);
     }
@@ -29,7 +29,7 @@ int main(void){
     return 0;
 }
 
-char* getString(){
+char* get_string(){
     uint32_t string_size = 32;
     uint32_t ptr_counter = 0;
     char* string = (char*)malloc(sizeof(char)*string_size);
@@ -50,13 +50,13 @@ char* getString(){
     return string;
 }
 
-char** getArrayOfStrings(uint32_t *num_of_strings){
+char** get_array_of_strings(uint32_t *num_of_strings){
     uint32_t array_size = 8;
     uint32_t str_ptr = 0;
 
     char** strings = (char**)malloc(sizeof(char*)*array_size);
     do{
-        strings[str_ptr++] = getString();
+        strings[str_ptr++] = get_string();
         if(strings[str_ptr-1] == NULL){
             free(strings);
             return NULL;
@@ -76,7 +76,7 @@ char** getArrayOfStrings(uint32_t *num_of_strings){
     return strings;
 }
 
-uint32_t myFunction(char** strings, uint32_t num_of_strings){
+uint32_t count_lines_with_equal_brackets(char** strings, const uint32_t num_of_strings){
     uint32_t num_of_correct_strings = 0;
     uint32_t left_brackets_num = 0;
     uint32_t right_brackets_num = 0;
